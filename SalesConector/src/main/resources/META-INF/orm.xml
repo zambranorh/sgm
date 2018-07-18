@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    
+    <description>Sales JPA XML Application</description>
+    
+    <package>com.conecel.claro.salesconnector.domain</package> 
+    
+ 	
+
+	<entity name="SalesResult" class="SalesResult">
+						
+		<named-native-query name="SalesResult.obtieneDetalleVentaPorOrden" result-class="SalesResult">
+			<query>
+			
+		select rownum id,
+		vta.numero_orden NoOrden,
+vta.descripcion descripcionVenta,
+       vta.fecha_ingreso,
+       vta.id_oficina      CodOficina,
+       ofi.descripcion      Oficina,
+       vend.nombre          Vendedor,
+       vta.id_cliente IdentificacionCliente,
+       cli.nombre           Cliente,
+       prod.descripcion descripcionProducto,
+       vta.valor_producto,
+       vta.fecha_activacion,
+       vta.estado,
+       fp.descripcion       FormaPago,
+       finc.descripcion     InstitucionFinanciera,
+       vta.id_solicitud     NoSolicitud,
+       vta.id_cuenta        Cuenta,
+       vta.id_usuario_reg   UsuarioReg
+  from rc_venta        vta,
+       rc_oficinas     ofi,
+       rc_vendedor     vend,
+       rc_cliente      cli,
+       rc_producto     prod,
+       rc_formas_pagos fp,
+       rc_financieras  finc
+ where vta.id_oficina = ofi.id_oficina
+   and vta.id_vendedor = vend.id_vendedor
+   and vta.id_cliente = cli.id_cliente
+   and vta.id_producto = prod.id_producto
+   and vta.id_forma_pago = fp.codigo
+   and vta.id_financiera = finc.id_financiera
+   and vta.numero_orden = ?1
+		
+			</query>
+		</named-native-query>
+		
+		
+	</entity>
+	
+	
+	
+
+</entity-mappings>

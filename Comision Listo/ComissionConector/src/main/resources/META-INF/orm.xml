@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    
+    <description>Comission JPA XML Application</description>
+    
+    <package>com.conecel.claro.comissionconnector.domain</package> 
+    
+ 	
+
+	<entity name="ComissionResult" class="ComissionResult">
+						
+		<named-native-query name="ComissionResult.obtieneComisionPorSolicitudYCuenta" result-class="ComissionResult">
+			<query>
+			
+			select to_char(rownum) id, v.nombre, o.id_canal, o.id_localidad
+  from rc_venta vt, rc_vendedor v, rc_oficinas o
+ where vt.id_vendedor = v.id_vendedor
+   and vt.id_oficina = o.id_oficina
+   and vt.id_solicitud = ?1
+   and vt.id_cuenta = ?2
+			
+			
+			</query>
+		</named-native-query>
+		
+		
+	</entity>
+	
+	
+	
+
+</entity-mappings>
