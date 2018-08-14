@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    
+    <description>List JPA XML Application</description>
+    
+    <package>com.conecel.claro.rejectionconnector.dto</package> 
+    
+ 	
+
+	<entity name="Offices" class="Offices">
+						
+		<named-native-query name="List.ObtieneOficinas" result-class="Offices">
+			<query>
+			select o.id_oficina, o.descripcion from rc_oficinas o
+        where o.id_canal=?1
+        and o.estado='A'
+			</query>
+		</named-native-query>
+		
+		
+	</entity>
+	
+	
+
+</entity-mappings>
