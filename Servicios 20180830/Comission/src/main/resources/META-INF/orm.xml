@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings
+	xmlns="http://java.sun.com/xml/ns/persistence/orm"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+	version="1.0">
+
+	<description>Comission JPA XML Application</description>
+
+	<package>com.conecel.claro.comission.domain</package>
+
+
+
+
+
+	<entity name="PreComission2" class="PreComission2">
+
+		<named-native-query
+			name="PreComission2.generaComision2" result-class="PreComission2">
+			<query>
+			
+			select vt.numero_orden,
+       o.id_localidad,
+       o.id_canal,
+       v.nombre NOMBRE_VENDEDOR,
+       v.id_vendedor,
+       cli.nombre NOMBRE_CLIENTE,
+       cli.id_cliente,
+       vt.plan,
+       vt.id_cuenta,
+       vt.fecha_ingreso FECHA_ING,
+       lot.fecha_reg,
+       lot.usuario_reg,
+       vt.equipo,
+       vt.cantidad,
+       vt.fecha_activacion FECHA_ACT,
+       lot.fecha_reg Fecha_Inc,
+       lot.usuario_reg Usuario_Inc,
+       lot.motivo,
+       ((nvl(lot.fecha_reg,sysdate)) - (vt.fecha_activacion)) dias,
+       case 
+         when ((nvl(lot.fecha_reg,sysdate)) - (vt.fecha_activacion)) > 20 then 'NO ENTREGA'
+          else 'FUERA DE TIEMPO'
+       end  Mensaje   
+  from rc_venta vt
+  left join rc_lotes2 lot
+    on vt.numero_orden = lot.no_orden, rc_vendedor v, rc_oficinas o,
+ rc_cliente cli
+ where vt.id_vendedor = v.id_vendedor
+   and vt.id_oficina = o.id_oficina
+   and vt.id_cliente = cli.id_cliente
+   and vt.fecha_ingreso between to_date(?1,'dd/mm/yyyy')and to_date(?2,'dd/mm/yyyy')
+			
+			
+			</query>
+		</named-native-query>
+
+
+	</entity>
+
+
+	<entity name="ComissionRules" class="ComissionRules">
+
+		<named-native-query
+			name="ComissionRules.obtieneReglas" result-class="ComissionRules">
+			<query>
+			
+			select dp.id_detalle,
+       nvl(dp.treg_inicial, 0) TI,
+       nvl(dp.treg_final, 9999999) TF,
+       nvl(dp.valor, 0) VALOR
+  from rc_penalidad p, rc_detalle_penalidad dp
+ where p.id_penalidad = dp.id_penalidad
+   and p.id_canal = ?1
+   and p.id_localidad = ?2
+   and p.estado = 'A'
+			
+			</query>
+		</named-native-query>
+
+
+	</entity>
+
+
+
+</entity-mappings>
